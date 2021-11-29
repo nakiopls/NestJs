@@ -1,5 +1,7 @@
 import {Body,Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
+import { CreateCoffeDto } from './dto/create-coffe.dto';
+import { UpdateCoffeDto } from './dto/update-coffe.dto';
 
 @Controller('coffees')
 
@@ -34,19 +36,24 @@ export class CoffeesController {
         //return `This action will return #${id} coffees`;
     }
 
-    @Post()
-    //With httpCode yo can return a specifc code to responds
-    @HttpCode(HttpStatus.GONE )
-    //if we pass the name of params in Body(), only we will read this params
-    //this can be used to validate param,
-    create(@Body() body){
+    // @Post()
+    // //With httpCode yo can return a specifc code to responds
+    // @HttpCode(HttpStatus.GONE )
+    // //if we pass the name of params in Body(), only we will read this params
+    // //this can be used to validate param,
+    // create(@Body() body){
 
-        return this.coffeesService.create(body);
+    //     return this.coffeesService.create(body);
+    // }
+
+    @Post()
+    create(@Body() CreateCoffeDto : CreateCoffeDto){
+        return this.coffeesService.create(CreateCoffeDto);
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() body){
-        return this.coffeesService.update(id,body)
+    update(@Param('id') id: string, @Body() UpdateCoffeDto:UpdateCoffeDto){
+        return this.coffeesService.update(id,UpdateCoffeDto)
         //return `This action will updates #${id} coffees`;
     }
 
