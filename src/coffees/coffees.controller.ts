@@ -1,4 +1,5 @@
 import {Body,Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeDto } from './dto/create-coffe.dto';
 import { UpdateCoffeDto } from './dto/update-coffe.dto';
@@ -12,20 +13,18 @@ export class CoffeesController {
     //3rd namig our parameter, calling it "coffeeService", very clear and readable for others.
     constructor(private readonly coffeesService: CoffeesService){}
     //the string in the GET add the endpoint
-    @Get('flavors')
-    findAll(){
-        return' This action will return all coffees ';
-    }
+
     @Get('')
-    findAllPagination(@Query() paginationQuery){
-        const{limit,offset}=paginationQuery;
-        return`This action will return all coffees. Limit: ${limit}, offset: ${offset}`;
+    findAllPagination(@Query() paginationQuery: PaginationQueryDto){
+        //const{limit,offset}=paginationQuery;
+
+        return this.coffeesService.findAll(paginationQuery)
     }
 
-    @Get('tstAll')
-    tstCoffeeMethod( @Query() tst){
-        return this.coffeesService.findAll();
-    }
+    //@Get('')
+    //allCoffeeMethod( ){
+    //    return this.coffeesService.findAll();
+    //}
 
     //dinamic Params to endpoint
     @Get(':id')
