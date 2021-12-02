@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
+import { CoffeeRatingModule } from './coffee-rating/coffee-rating.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -18,7 +20,9 @@ import { CoffeesModule } from './coffees/coffees.module';
       //this synchronize configuration, let's typeORM automatically generate a SQL Table from all classes
       //with the @Entity() decorator and the metadata they contain
       synchronize: true, // your entities will be synced with the database(recommended: disable in prod)
-    })],
+    }),
+    CoffeeRatingModule,
+    DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })
