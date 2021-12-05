@@ -1,12 +1,15 @@
 import { Injectable, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Event } from 'src/events/entities/event.entity';
 import { Connection } from 'typeorm';
 import { COFFEE_BRANDS } from './coffees.constants';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
+import coffeeConfig from './config/coffee.config';
 import { Coffee } from './entities/coffee.entity';
 import { Flavor } from './entities/flavor.entity';
+
 
 class MockCoffeeService{
 }
@@ -28,7 +31,10 @@ export class CoffeeBrandsFactory {
 @Module({
     //forFeature() registers TypeORM in this child module, forRoot() is set in the app.module
     //in this array, you can pass all entitys
-    imports: [TypeOrmModule.forFeature([Coffee,Flavor,Event])],
+    imports: [
+        TypeOrmModule.forFeature([Coffee,Flavor,Event]),
+        ConfigModule.forFeature(coffeeConfig)
+    ],
     controllers: [CoffeesController],
     providers: [CoffeesService,
         CoffeeBrandsFactory,
