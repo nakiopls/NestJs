@@ -1,8 +1,12 @@
-import {Body,Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
+import {Body,Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, SetMetadata, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeDto } from './dto/create-coffe.dto';
 import { UpdateCoffeDto } from './dto/update-coffe.dto';
+
 
 @Controller('coffees')
 
@@ -14,10 +18,22 @@ export class CoffeesController {
     constructor(private readonly coffeesService: CoffeesService){}
     //the string in the GET add the endpoint
 
-    @Get('')
-    findAllPagination(@Query() paginationQuery: PaginationQueryDto){
-        //const{limit,offset}=paginationQuery;
+    //adding a specify validator to method
+    //@UsePipes(ValidationPipe)
+    //adding Metadata
+    // @Public()
+    // @Get('')
+    // async findAllPagination(@Query() paginationQuery: PaginationQueryDto){
+    //     //const{limit,offset}=paginationQuery;
+    //     //await new Promise(resolve => setTimeout(resolve, 5000));
+    //     return this.coffeesService.findAll(paginationQuery)
+    // }
 
+    /** To test custom params decorator */
+    @Public()
+    @Get('')
+    async findAllPagination(@Protocol('http') protocol: string ,@Query() paginationQuery: PaginationQueryDto){
+        console.log(protocol)
         return this.coffeesService.findAll(paginationQuery)
     }
 
@@ -27,9 +43,10 @@ export class CoffeesController {
     //}
 
     //dinamic Params to endpoint
+    @Public()
     @Get(':id')
     //if we pass only 1 params
-    findOne(@Param('id') id:string){
+    findOne(@Param('id',ParseIntPipe) id:string){
         return this.coffeesService.findOne(id)
         //COMILLAS REVERSAS PARA INVOCAR LA VARIABLE o acentos-> `  `
         //return `This action will return #${id} coffees`;
