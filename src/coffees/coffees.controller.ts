@@ -1,4 +1,5 @@
 import {Body,Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, SetMetadata, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -7,7 +8,7 @@ import { CoffeesService } from './coffees.service';
 import { CreateCoffeDto } from './dto/create-coffe.dto';
 import { UpdateCoffeDto } from './dto/update-coffe.dto';
 
-
+@ApiTags('coffees')
 @Controller('coffees')
 
 export class CoffeesController {
@@ -29,6 +30,9 @@ export class CoffeesController {
     //     return this.coffeesService.findAll(paginationQuery)
     // }
 
+    @ApiForbiddenResponse({description: 'Forbidden.' })
+    // or use @ApiResponse({ status: 403, description: 'Forbidden.' }) to get full control
+    // whit the answer
     /** To test custom params decorator */
     @Public()
     @Get('')
